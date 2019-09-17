@@ -1,0 +1,28 @@
+name: A.R.T. - Artifact
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: macOS-10.14
+    
+    steps:
+    - name: Clone Repository
+      run: ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null
+    - name: Install Package Dependencies
+      run: brew install GSL jpeg libtiff little-cms2 openexr openjpeg
+    - name: Clone Repository
+      run: git clone git://cgg.mff.cuni.cz/ART.git
+    - name: Configure Package
+      run: |
+        cd ART
+        git checkout 2.0.4
+        mkdir build
+        cd build
+        cmake ..
+    - name: Build Package
+      run: make
+    - name: What Else
+      run: ls -a
+      
