@@ -14,19 +14,22 @@ jobs:
       run: brew install GSL jpeg libtiff little-cms2 openexr openjpeg
     - name: Clone Repository
       run: git clone git://cgg.mff.cuni.cz/ART.git
-    - name: Patch Tiff Include
-      run: sudo sed -i.bak -e '33d' /Library/Frameworks/Mono.framework/Headers/tiffio.h
-    - name: Configure Package
-      run: |
-        cd ART
-        git checkout 2.0.4
-        mkdir build
-        cd build
-        cmake ..
-    - name: Build Package
-      run: |
-        cd ART/build
-        make
-    - name: What Else
-      run: ls -lrth
-      
+#     - name: Patch Tiff Include
+#       run: sudo sed -i.bak -e '33d' /Library/Frameworks/Mono.framework/Headers/tiffio.h
+#     - name: Configure Package
+#       run: |
+#         cd ART
+#         git checkout 2.0.4
+#         mkdir build
+#         cd build
+#         cmake ..
+#     - name: Build Package
+#       run: |
+#         cd ART/build
+#         make
+#     - name: What Else
+#       run: ls -lrth
+    - uses: actions/upload-artifact@master
+      with:
+        name: headers
+        path: /Library/Frameworks/Mono.framework/Headers/
