@@ -23,7 +23,7 @@ jobs:
         cmake ..
     - name: Build Package
       run: |
-        ls -lrth
+        cd ART/build
         make
     - name: What Else
       run: ls -lrth
