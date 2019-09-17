@@ -8,7 +8,7 @@ jobs:
     runs-on: macOS-10.14
     
     steps:
-    - name: Clone Repository
+    - name: Install Homebrew
       run: ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null
     - name: Install Package Dependencies
       run: brew install GSL jpeg libtiff little-cms2 openexr openjpeg
