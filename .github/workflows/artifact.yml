@@ -22,7 +22,9 @@ jobs:
         cd build
         cmake ..
     - name: Build Package
-      run: make
+      run: |
+        ls -lrth
+        make
     - name: What Else
-      run: ls -a
+      run: ls -lrth
       
