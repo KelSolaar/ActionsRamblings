@@ -15,7 +15,7 @@ jobs:
     - name: Clone Repository
       run: git clone git://cgg.mff.cuni.cz/ART.git
     - name: Patch Tiff Include
-      run: sed -i.bak -e '33d' /Library/Frameworks/Mono.framework/Headers/tiffio.h
+      run: sudo sed -i.bak -e '33d' /Library/Frameworks/Mono.framework/Headers/tiffio.h
     - name: Configure Package
       run: |
         cd ART
