@@ -23,7 +23,7 @@ jobs:
         git checkout 2.0.4
         mkdir build
         cd build
-        cmake ..
+        cmake .. -G Xcode
     - name: Build Package
       run: |
         cd ART/build
