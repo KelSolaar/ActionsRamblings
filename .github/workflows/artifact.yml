@@ -27,8 +27,7 @@ jobs:
     - name: Build Package
       run: |
         cd ART/build
-        ls -lrth
-        make
+        cmake --build .
     - uses: actions/upload-artifact@master
       with:
         name: ART-2.0.4
