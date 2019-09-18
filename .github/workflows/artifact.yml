@@ -23,11 +23,11 @@ jobs:
         git checkout 2.0.4
         mkdir build
         cd build
-        cmake .. -G Xcode -DCMAKE_INSTALL_PREFIX=release
+        cmake .. -G Xcode -DCMAKE_INSTALL_PREFIX=./release
     - name: Build Package
       run: |
         cd ART/build
-        cmake --build .
+        cmake --build . --target install --config Release
     - uses: actions/upload-artifact@master
       with:
         name: ART-2.0.4
