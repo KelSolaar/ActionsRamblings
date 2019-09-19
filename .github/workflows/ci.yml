@@ -42,7 +42,7 @@ jobs:
         PATH=$HOME/miniconda/bin:$PATH
         echo ::set-env name=PATH::$PATH
         conda update --yes --quiet conda
-        conda create --yes --quiet -n colour-ci python=${PYTHON_VERSION} coverage coveralls flake8 imageio matplotlib mock nose pandas pyqt scipy six
+        conda create --yes --quiet -n python-ci python=${PYTHON_VERSION} coverage coveralls flake8 imageio matplotlib mock nose pandas pyqt scipy six
         source activate python-ci
     - name: Ubuntu - Install OIIO
       if: matrix.os == 'ubuntu-18.04' && matrix.python-version == '3.6'
