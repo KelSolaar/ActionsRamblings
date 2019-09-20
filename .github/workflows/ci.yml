@@ -24,9 +24,9 @@ jobs:
     - name: Build CMake
       run: |
         sudo apt purge cmake 
-        wget https://github.com/Kitware/CMake/archive/v3.15.3.tar.gz -O cmake-3.15.3.tar.gz
-        tar xzf cmake-3.15.3.tar.gz
-        cd cmake-3.15.3
+        wget https://github.com/Kitware/CMake/archive/v3.15.3.tar.gz -O CMake-3.15.3.tar.gz
+        tar xzf CMake-3.15.3.tar.gz
+        cd CMake-3.15.3
         ./bootstrap
         make
         sudo make install
