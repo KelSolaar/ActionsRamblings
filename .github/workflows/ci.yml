@@ -27,9 +27,9 @@ jobs:
         tar xzf boost_1_70_0.tar.gz
         cd boost_1_70_0
         sudo ln -s /usr/local/include/python3.6m /usr/local/include/python3.6
-        ./bootstrap.sh --with-python=$(which python3)
-        ./b2 install
-        ldconfig
+        sudo ./bootstrap.sh --with-python=$(which python3)
+        sudo ./b2 install
+        sudo ldconfig
     - name: Download Source
       run: |
         wget https://github.com/OpenImageIO/oiio/archive/$OIIO_VERSION.tar.gz -O $OIIO_PACKAGE.tar.gz
