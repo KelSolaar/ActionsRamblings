@@ -33,6 +33,7 @@ jobs:
         make PYTHON_VERSION=3.6
     - name: Test Package
       run: |
+        PYTHON_VERSION=3.6
         VIRTUAL_ENVIRONMENT=continuous-integration
         wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
         chmod +x miniconda.sh
