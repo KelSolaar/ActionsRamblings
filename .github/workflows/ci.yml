@@ -21,9 +21,18 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get --yes install build-essential cmake libilmbase-dev libopenexr-dev
+    - name: Build CMake
+      run: |
+        sudo apt purge cmake 
+        wget https://github.com/Kitware/CMake/archive/v3.15.3.tar.gz -O cmake-3.15.3.tar.gz
+        tar xzf cmake-3.15.3.tar.gz
+        cd cmake-3.15.3
+        ./bootstrap
+        make
+        sudo make install
     - name: Build Boost
       run: |
-        wget --no-verbose https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0.tar.gz
+        wget https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0.tar.gz
         tar xzf boost_1_70_0.tar.gz
         cd boost_1_70_0
         sudo ln -s /usr/local/include/python3.6m /usr/local/include/python3.6
