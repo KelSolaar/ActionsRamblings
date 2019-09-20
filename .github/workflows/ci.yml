@@ -21,10 +21,9 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get --yes install build-essential cmake libilmbase-dev libopenexr-dev
-        sudo apt-get --yes purge boost
-        sudo apt-get --yes purge cmake
     - name: Build CMake
       run: | 
+        sudo apt-get --yes purge cmake
         wget https://github.com/Kitware/CMake/archive/v3.15.3.tar.gz -O CMake-3.15.3.tar.gz
         tar xzf CMake-3.15.3.tar.gz
         cd CMake-3.15.3
@@ -33,6 +32,8 @@ jobs:
         sudo make install
     - name: Build Boost
       run: |
+        sudo rm /usr/local/lib/libboost*
+        sudo rm -rf /usr/local/include/boost
         wget https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0.tar.gz -O boost_1_70_0.tar.gz
         tar xzf boost_1_70_0.tar.gz
         cd boost_1_70_0
