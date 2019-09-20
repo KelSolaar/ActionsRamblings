@@ -12,7 +12,7 @@ jobs:
     - name: Environment Variables
       run: |
         OIIO_FAMILY=OpenImageIO
-        OIIO_VERSION=Release-1.8.17
+        OIIO_VERSION=Release-2.0.10
         OIIO_PACKAGE=$OIIO_FAMILY-$OIIO_VERSION
         echo ::set-env name=OIIO_FAMILY::$OIIO_FAMILY
         echo ::set-env name=OIIO_VERSION::$OIIO_VERSION
@@ -20,25 +20,7 @@ jobs:
     - name: Update & Install APT Package Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get --yes install build-essential cmake libilmbase-dev libopenexr-dev
-    - name: Build CMake
-      run: | 
-        sudo apt-get --yes purge cmake
-        wget https://github.com/Kitware/CMake/archive/v3.15.3.tar.gz -O CMake-3.15.3.tar.gz
-        tar xzf CMake-3.15.3.tar.gz
-        cd CMake-3.15.3
-        ./bootstrap
-        make
-        sudo make install
-    - name: Build Boost
-      run: |
-        wget https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.gz -O boost_1_66_0.tar.gz
-        tar xzf boost_1_66_0.tar.gz
-        cd boost_1_66_0
-        sudo ln -s /usr/local/include/python3.6m /usr/local/include/python3.6
-        sudo ./bootstrap.sh --with-python=$(which python3)
-        sudo ./b2 install
-        sudo ldconfig
+        sudo apt-get --yes install build-essential cmake libilmbase-dev libopenexr-dev libpng-dev libtiff5-dev
     - name: Download Source
       run: |
         wget https://github.com/OpenImageIO/oiio/archive/$OIIO_VERSION.tar.gz -O $OIIO_PACKAGE.tar.gz
