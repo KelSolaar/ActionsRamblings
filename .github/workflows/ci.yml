@@ -31,37 +31,38 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get --yes install build-essential cmake libboost-all-dev libilmbase-dev libopenexr-dev
-    - name: Ubuntu - Download Conda
-      if: matrix.os == 'ubuntu-18.04'    
-      run: |
-        if [ ${PYTHON_VERSION:O:1} == "2" ]; then wget http://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh; else wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh; fi
-    - name: macOS - Download Conda
-      if: matrix.os == 'macOS-10.14'    
-      run: |
-        if [ ${PYTHON_VERSION:O:1} == "2" ]; then wget http://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh; else wget http://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh; fi
-    - name: Install Package Dependencies
-      run: |
-        chmod +x miniconda.sh
-        ./miniconda.sh -b -p $HOME/miniconda
-        PATH=$HOME/miniconda/bin:$PATH
-        echo ::set-env name=PATH::$PATH
-        conda update --yes --quiet conda
-        conda create --yes --quiet -n $VIRTUAL_ENVIRONMENT python=$PYTHON_VERSION $PACKAGE_DEPENDENCIES
-        source activate $VIRTUAL_ENVIRONMENT
-        python -c "import imageio;imageio.plugins.freeimage.download()"
-    - name: Ubuntu - Install OpenImageIO
-      if: matrix.os == 'ubuntu-18.04' && matrix.python-version == '3.6'
-      run: |
-        wget https://github.com/colour-science/artifacts/suites/228982111/artifacts/37347 -O OpenImageIO-Release-1.8.17.zip
-        unzip OpenImageIO-Release-1.8.17.zip
-        sudo cp OpenImageIO-Release-1.8.17/linux64/bin/* /usr/bin/
-        sudo cp -r OpenImageIO-Release-1.8.17/linux64/lib/* /usr/lib/
-        sudo rm -rf /usr/lib/python3.6
-        cp OpenImageIO-Release-1.8.17/linux64/lib/python3.6/site-packages/OpenImageIO.so /home/runner/miniconda/envs/$VIRTUAL_ENVIRONMENT/lib/python3.6/site-packages/
-    - name: Test OIIO
-      run: |
-        ldd /home/runner/miniconda/envs/$VIRTUAL_ENVIRONMENT/lib/python3.6/site-packages/OpenImageIO.so
-        ls -l /usr/lib/*OpenImageIO*
-        ldd /usr/lib/*OpenImageIO*
-        source activate $VIRTUAL_ENVIRONMENT
-        python -c "import OpenImageIO;print(OpenImageIO.VERSION)"
+        ls -l /usr/lib/x86_64-linux-gnu/libboost_python*
+#     - name: Ubuntu - Download Conda
+#       if: matrix.os == 'ubuntu-18.04'    
+#       run: |
+#         if [ ${PYTHON_VERSION:O:1} == "2" ]; then wget http://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh; else wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh; fi
+#     - name: macOS - Download Conda
+#       if: matrix.os == 'macOS-10.14'    
+#       run: |
+#         if [ ${PYTHON_VERSION:O:1} == "2" ]; then wget http://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh; else wget http://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh; fi
+#     - name: Install Package Dependencies
+#       run: |
+#         chmod +x miniconda.sh
+#         ./miniconda.sh -b -p $HOME/miniconda
+#         PATH=$HOME/miniconda/bin:$PATH
+#         echo ::set-env name=PATH::$PATH
+#         conda update --yes --quiet conda
+#         conda create --yes --quiet -n $VIRTUAL_ENVIRONMENT python=$PYTHON_VERSION $PACKAGE_DEPENDENCIES
+#         source activate $VIRTUAL_ENVIRONMENT
+#         python -c "import imageio;imageio.plugins.freeimage.download()"
+#     - name: Ubuntu - Install OpenImageIO
+#       if: matrix.os == 'ubuntu-18.04' && matrix.python-version == '3.6'
+#       run: |
+#         wget https://github.com/colour-science/artifacts/suites/228982111/artifacts/37347 -O OpenImageIO-Release-1.8.17.zip
+#         unzip OpenImageIO-Release-1.8.17.zip
+#         sudo cp OpenImageIO-Release-1.8.17/linux64/bin/* /usr/bin/
+#         sudo cp -r OpenImageIO-Release-1.8.17/linux64/lib/* /usr/lib/
+#         sudo rm -rf /usr/lib/python3.6
+#         cp OpenImageIO-Release-1.8.17/linux64/lib/python3.6/site-packages/OpenImageIO.so /home/runner/miniconda/envs/$VIRTUAL_ENVIRONMENT/lib/python3.6/site-packages/
+#     - name: Test OIIO
+#       run: |
+#         ldd /home/runner/miniconda/envs/$VIRTUAL_ENVIRONMENT/lib/python3.6/site-packages/OpenImageIO.so
+#         ls -l /usr/lib/*OpenImageIO*
+#         ldd /usr/lib/*OpenImageIO*
+#         source activate $VIRTUAL_ENVIRONMENT
+#         python -c "import OpenImageIO;print(OpenImageIO.VERSION)"
