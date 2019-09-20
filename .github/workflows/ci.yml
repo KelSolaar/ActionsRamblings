@@ -1,17 +1,27 @@
-name: OIIO
+name: Continuous Integration
 
 on: [push]
 
 jobs:
   build:
     strategy:
-      max-parallel: 4
       matrix:
         os: [ubuntu-18.04]
         python-version: [3.6]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v1
+    - name: Environment Variables
+      env:
+        PYTHON_VERSION: ${{ matrix.python-version }}
+      run: |
+        VIRTUAL_ENVIRONMENT=continuous-integration
+        PACKAGE=colour
+        PACKAGE_DEPENDENCIES="coverage coveralls flake8 imageio matplotlib mock nose pandas pyqt scipy six"
+        echo ::set-env name=PYTHON_VERSION::$PYTHON_VERSION
+        echo ::set-env name=VIRTUAL_ENVIRONMENT::$VIRTUAL_ENVIRONMENT
+        echo ::set-env name=PACKAGE::$PACKAGE
+        echo ::set-env name=PACKAGE_DEPENDENCIES::$PACKAGE_DEPENDENCIES
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
@@ -22,33 +32,32 @@ jobs:
         sudo apt-get update
         sudo apt-get --yes install libboost-all-dev libilmbase-dev libopenexr-dev
     - name: Ubuntu - Download Conda
-      env:
-        PYTHON_VERSION: ${{ matrix.python-version }}
       if: matrix.os == 'ubuntu-18.04'    
       run: |
         if [ ${PYTHON_VERSION:O:1} == "2" ]; then wget http://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh; else wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh; fi
     - name: macOS - Download Conda
-      env:
-        PYTHON_VERSION: ${{ matrix.python-version }}
       if: matrix.os == 'macOS-10.14'    
       run: |
         if [ ${PYTHON_VERSION:O:1} == "2" ]; then wget http://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh; else wget http://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh; fi
     - name: Install Package Dependencies
-      env:
-        PYTHON_VERSION: ${{ matrix.python-version }}
       run: |
         chmod +x miniconda.sh
         ./miniconda.sh -b -p $HOME/miniconda
         PATH=$HOME/miniconda/bin:$PATH
         echo ::set-env name=PATH::$PATH
         conda update --yes --quiet conda
-        conda create --yes --quiet -n python-ci python=${PYTHON_VERSION} coverage coveralls flake8 imageio matplotlib mock nose pandas pyqt scipy six
-        source activate python-ci
-    - name: Ubuntu - Install OIIO
+        conda create --yes --quiet -n $VIRTUAL_ENVIRONMENT python=$PYTHON_VERSION $PACKAGE_DEPENDENCIES
+        source activate $VIRTUAL_ENVIRONMENT
+        python -c "import imageio;imageio.plugins.freeimage.download()"
+    - name: Ubuntu - Install OpenImageIO
       if: matrix.os == 'ubuntu-18.04' && matrix.python-version == '3.6'
       run: |
         wget https://github.com/colour-science/artifacts/suites/228982111/artifacts/37347 -O OpenImageIO-Release-1.8.17.zip
         unzip OpenImageIO-Release-1.8.17.zip
-        pwd
-        ll OpenImageIO-Release-1.8.17
-
+        sudo cp OpenImageIO-Release-1.8.17/linux64/bin/* /usr/local/bin/
+        sudo cp -r OpenImageIO-Release-1.8.17/linux64/lib/* /usr/local/lib/
+        cp OpenImageIO-Release-1.8.17/linux64/lib/python3.6/site-packages/OpenImageIO.so /home/runner/miniconda/envs/$VIRTUAL_ENVIRONMENT/lib/python3.6/site-packages/
+    - name: Test OIIO
+      run: |
+        source activate $VIRTUAL_ENVIRONMENT
+        python -c "import OpenImageIO;print(OpenImageIO.VERSION)"
