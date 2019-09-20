@@ -60,7 +60,7 @@ jobs:
         cp OpenImageIO-Release-1.8.17/linux64/lib/python3.6/site-packages/OpenImageIO.so /home/runner/miniconda/envs/$VIRTUAL_ENVIRONMENT/lib/python3.6/site-packages/
     - name: Test OIIO
       run: |
-        ls -l /usr/local/lib/*OpenImageIO*
-        ldd /usr/local/lib/libOpenImageIO.so.1.8
+        ldd /home/runner/miniconda/envs/$VIRTUAL_ENVIRONMENT/lib/python3.6/site-packages/OpenImageIO.so
+        ldd /usr/local/lib/*OpenImageIO*
         source activate $VIRTUAL_ENVIRONMENT
         python -c "import OpenImageIO;print(OpenImageIO.VERSION)"
