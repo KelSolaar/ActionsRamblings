@@ -54,13 +54,14 @@ jobs:
       run: |
         wget https://github.com/colour-science/artifacts/suites/228982111/artifacts/37347 -O OpenImageIO-Release-1.8.17.zip
         unzip OpenImageIO-Release-1.8.17.zip
-        sudo cp OpenImageIO-Release-1.8.17/linux64/bin/* /usr/local/bin/
-        sudo cp -r OpenImageIO-Release-1.8.17/linux64/lib/* /usr/local/lib/
-        sudo rm -rf /usr/local/lib/python3.6
+        sudo cp OpenImageIO-Release-1.8.17/linux64/bin/* /usr/bin/
+        sudo cp -r OpenImageIO-Release-1.8.17/linux64/lib/* /usr/lib/
+        sudo rm -rf /usr/lib/python3.6
         cp OpenImageIO-Release-1.8.17/linux64/lib/python3.6/site-packages/OpenImageIO.so /home/runner/miniconda/envs/$VIRTUAL_ENVIRONMENT/lib/python3.6/site-packages/
     - name: Test OIIO
       run: |
         ldd /home/runner/miniconda/envs/$VIRTUAL_ENVIRONMENT/lib/python3.6/site-packages/OpenImageIO.so
-        ldd /usr/local/lib/*OpenImageIO*
+        ls -l /usr/lib/*OpenImageIO*
+        ldd /usr/lib/*OpenImageIO*
         source activate $VIRTUAL_ENVIRONMENT
         python -c "import OpenImageIO;print(OpenImageIO.VERSION)"
