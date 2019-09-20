@@ -28,11 +28,12 @@ jobs:
         tar -xvf $OIIO_PACKAGE.tar.gz -C $OIIO_PACKAGE --strip-components=1
     - name: Build Package
       run: |
-        VIRTUAL_ENVIRONMENT=continuous-integration
         PYTHON_VERSION=3.6
         cd $OIIO_PACKAGE
         make PYTHON_VERSION=3.6
-        cd ..
+    - name: Test Package
+      run: |
+        VIRTUAL_ENVIRONMENT=continuous-integration
         wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
         chmod +x miniconda.sh
         ./miniconda.sh -b -p $HOME/miniconda
@@ -41,8 +42,8 @@ jobs:
         conda update --yes --quiet conda
         conda create --yes --quiet -n $VIRTUAL_ENVIRONMENT python=$PYTHON_VERSION
         source activate $VIRTUAL_ENVIRONMENT
-        sudo cp OpenImageIO-Release-1.8.17/dist/linux64/bin/* /usr/bin/
-        sudo cp -r OpenImageIO-Release-1.8.17/dist/linux64/lib/* /usr/lib/
+        sudo cp $OIIO_PACKAGE/dist/linux64/bin/* /usr/bin/
+        sudo cp -r $OIIO_PACKAGE/dist/linux64/lib/* /usr/lib/
         sudo rm -rf /usr/lib/python3.6
-        cp OpenImageIO-Release-1.8.17/dist/linux64/lib/python3.6/site-packages/OpenImageIO.so /home/runner/miniconda/envs/$VIRTUAL_ENVIRONMENT/lib/python3.6/site-packages/
+        cp $OIIO_PACKAGE/dist/linux64/lib/python3.6/site-packages/OpenImageIO.so /home/runner/miniconda/envs/$VIRTUAL_ENVIRONMENT/lib/python3.6/site-packages/
         python -c "import OpenImageIO;print(OpenImageIO.VERSION)"
