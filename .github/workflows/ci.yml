@@ -19,7 +19,7 @@ jobs:
       run: |
         VIRTUAL_ENVIRONMENT=continuous-integration
         PACKAGE=colour
-        PACKAGE_DEPENDENCIES="coverage coveralls flake8 imageio matplotlib mock nose pandas pyqt scipy six"
+        PACKAGE_DEPENDENCIES=coverage coveralls flake8 imageio matplotlib mock nose pandas pyqt scipy six
         echo ::set-env name=PYTHON_VERSION::$PYTHON_VERSION
         echo ::set-env name=VIRTUAL_ENVIRONMENT::$VIRTUAL_ENVIRONMENT
         echo ::set-env name=PACKAGE::$PACKAGE
@@ -40,7 +40,7 @@ jobs:
       run: |
         set VIRTUAL_ENVIRONMENT=continuous-integration
         set PACKAGE=colour
-        set PACKAGE_DEPENDENCIES="coverage coveralls flake8 imageio matplotlib mock nose pandas pyqt scipy six"
+        set PACKAGE_DEPENDENCIES=coverage coveralls flake8 imageio matplotlib mock nose pandas pyqt scipy six
         echo ::set-env name=PYTHON_VERSION::%PYTHON_VERSION%
         echo ::set-env name=VIRTUAL_ENVIRONMENT::%VIRTUAL_ENVIRONMENT%
         echo ::set-env name=PACKAGE::%PACKAGE%
@@ -62,3 +62,14 @@ jobs:
         conda create --yes --quiet -n %VIRTUAL_ENVIRONMENT% python=%PYTHON_VERSION% %PACKAGE_DEPENDENCIES%
         source activate %VIRTUAL_ENVIRONMENT%
         python -c "import imageio;imageio.plugins.freeimage.download()"
+    - name: Lint with flake8
+      run: |
+        cd %GITHUB_WORKSPACE%
+        source activate %VIRTUAL_ENVIRONMENT%
+        flake8 %PACKAGE% --count --show-source --statistics
+    - name: Test with nosetests
+      run: |
+        cd %GITHUB_WORKSPACE%
+        set PYTHONWARNINGS=ignore
+        source activate %VIRTUAL_ENVIRONMENT%
+        nosetests --nocapture --with-doctest --doctest-options=+ELLIPSIS --with-coverage --cover-package=%PACKAGE% %PACKAGE%
