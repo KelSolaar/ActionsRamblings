@@ -49,7 +49,7 @@ jobs:
       run: |
         cd %GITHUB_WORKSPACE%
         echo A!
-        activate %VIRTUAL_ENVIRONMENT%
+        call activate %VIRTUAL_ENVIRONMENT%
         echo B!
         where python
         flake8 %PACKAGE% --count --show-source --statistics
@@ -58,7 +58,7 @@ jobs:
         cd %GITHUB_WORKSPACE%
         echo A!
         set PYTHONWARNINGS=ignore
-        activate %VIRTUAL_ENVIRONMENT%
+        call activate %VIRTUAL_ENVIRONMENT%
         echo B!
         where python        
         echo %cd%
