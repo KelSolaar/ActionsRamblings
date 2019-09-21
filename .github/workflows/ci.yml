@@ -35,31 +35,10 @@ jobs:
         Miniconda.exe /S /D=%USERPROFILE%\miniconda
         set PATH=%USERPROFILE%\miniconda\condabin;%PATH%
         echo ::set-env name=PATH::%PATH%
-        echo Here!
         conda update --yes --quiet conda
     - name: Install Package Dependencies
       run: |
-        echo There!
         conda create --yes --quiet -n %VIRTUAL_ENVIRONMENT% python=%PYTHON_VERSION% %PACKAGE_DEPENDENCIES%
-        echo Boo!
-        source activate %VIRTUAL_ENVIRONMENT%
-        python -c "import imageio;imageio.plugins.freeimage.download()"
-        tree %USERPROFILE%\miniconda
-    - name: Lint with flake8
-      run: |
-        cd %GITHUB_WORKSPACE%
-        echo A!
         call activate %VIRTUAL_ENVIRONMENT%
-        echo B!
         where python
-        flake8 %PACKAGE% --count --show-source --statistics
-    - name: Test with nosetests
-      run: |
-        cd %GITHUB_WORKSPACE%
-        echo A!
-        set PYTHONWARNINGS=ignore
-        call activate %VIRTUAL_ENVIRONMENT%
-        echo B!
-        where python        
-        echo %cd%
-        nosetests --nocapture --with-doctest --doctest-options=+ELLIPSIS --with-coverage --cover-package=%PACKAGE% %PACKAGE%
+        python -c "import imageio;imageio.plugins.freeimage.download()"
