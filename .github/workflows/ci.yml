@@ -48,14 +48,18 @@ jobs:
     - name: Lint with flake8
       run: |
         cd %GITHUB_WORKSPACE%
+        echo A!
         activate %VIRTUAL_ENVIRONMENT%
-        echo %cd%
+        echo B!
         where python
         flake8 %PACKAGE% --count --show-source --statistics
     - name: Test with nosetests
       run: |
         cd %GITHUB_WORKSPACE%
+        echo A!
         set PYTHONWARNINGS=ignore
         activate %VIRTUAL_ENVIRONMENT%
+        echo B!
+        where python        
         echo %cd%
         nosetests --nocapture --with-doctest --doctest-options=+ELLIPSIS --with-coverage --cover-package=%PACKAGE% %PACKAGE%
