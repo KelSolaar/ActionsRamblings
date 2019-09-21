@@ -3,29 +3,6 @@ name: Continuous Integration
 on: [push]
 
 jobs:
-  build-unix:
-    name: Build Ubuntu & macOS
-    strategy:
-      matrix:
-        os: [ubuntu-18.04, macOS-10.14]
-        python-version: [2.7, 3.6, 3.7]
-    runs-on: ${{ matrix.os }}
-    steps:
-    - uses: actions/checkout@v1
-    - name: Environment Variables
-      env:
-        PYTHON_VERSION: ${{ matrix.python-version }}
-      if: matrix.os == 'ubuntu-18.04' || matrix.os == 'macOS-10.14'
-      run: |
-        VIRTUAL_ENVIRONMENT=continuous-integration
-        PACKAGE=colour
-        PACKAGE_DEPENDENCIES=coverage coveralls flake8 imageio matplotlib mock nose pandas pyqt scipy six
-        echo ::set-env name=PYTHON_VERSION::$PYTHON_VERSION
-        echo ::set-env name=VIRTUAL_ENVIRONMENT::$VIRTUAL_ENVIRONMENT
-        echo ::set-env name=PACKAGE::$PACKAGE
-        echo ::set-env name=PACKAGE_DEPENDENCIES::$PACKAGE_DEPENDENCIES
-    - name: Test Environment
-      run: echo $VIRTUAL_ENVIRONMENT
   build-windows:
     strategy:
       matrix:
@@ -40,7 +17,7 @@ jobs:
       run: |
         set VIRTUAL_ENVIRONMENT=continuous-integration
         set PACKAGE=colour
-        set PACKAGE_DEPENDENCIES="coverage coveralls flake8 imageio matplotlib mock nose pandas pyqt scipy six"
+        set PACKAGE_DEPENDENCIES=coverage coveralls flake8 imageio matplotlib mock nose pandas pyqt scipy six
         echo ::set-env name=PYTHON_VERSION::%PYTHON_VERSION%
         echo ::set-env name=VIRTUAL_ENVIRONMENT::%VIRTUAL_ENVIRONMENT%
         echo ::set-env name=PACKAGE::%PACKAGE%
