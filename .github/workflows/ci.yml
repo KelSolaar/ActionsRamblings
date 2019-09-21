@@ -1,50 +1,48 @@
-name: OpenImageIO - Artifact
+name: Continuous Integration
 
 on: [push]
 
 jobs:
-  build:
-
-    runs-on: ubuntu-18.04
-
+  build-unix:
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, macOS-10.14]
+        python-version: [2.7, 3.6, 3.7]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v1
     - name: Environment Variables
+      env:
+        PYTHON_VERSION: ${{ matrix.python-version }}
       run: |
-        OIIO_FAMILY=OpenImageIO
-        OIIO_VERSION=Release-2.0.10
-        OIIO_PACKAGE=$OIIO_FAMILY-$OIIO_VERSION
-        echo ::set-env name=OIIO_FAMILY::$OIIO_FAMILY
-        echo ::set-env name=OIIO_VERSION::$OIIO_VERSION
-        echo ::set-env name=OIIO_PACKAGE::$OIIO_PACKAGE
-    - name: Update & Install APT Package Dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get --yes install build-essential cmake libboost-all-dev libilmbase-dev libopenexr-dev libpng-dev libtiff5-dev
-    - name: Download Source
-      run: |
-        wget https://github.com/OpenImageIO/oiio/archive/$OIIO_VERSION.tar.gz -O $OIIO_PACKAGE.tar.gz
-        mkdir $OIIO_PACKAGE
-        tar -xvf $OIIO_PACKAGE.tar.gz -C $OIIO_PACKAGE --strip-components=1
-    - name: Build Package
-      run: |
-        PYTHON_VERSION=3.6
-        cd $OIIO_PACKAGE
-        make PYTHON_VERSION=3.6
-    - name: Test Package
-      run: |
-        PYTHON_VERSION=3.6
+      if: matrix.os == 'ubuntu-18.04' || matrix.os == 'macOS-10.14'
         VIRTUAL_ENVIRONMENT=continuous-integration
-        wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
-        chmod +x miniconda.sh
-        ./miniconda.sh -b -p $HOME/miniconda
-        PATH=$HOME/miniconda/bin:$PATH
-        echo ::set-env name=PATH::$PATH
-        conda update --yes --quiet conda
-        conda create --yes --quiet -n $VIRTUAL_ENVIRONMENT python=$PYTHON_VERSION
-        source activate $VIRTUAL_ENVIRONMENT
-        sudo cp $OIIO_PACKAGE/dist/linux64/bin/* /usr/bin/
-        sudo cp -r $OIIO_PACKAGE/dist/linux64/lib/* /usr/lib/
-        sudo rm -rf /usr/lib/python3.6
-        cp $OIIO_PACKAGE/dist/linux64/lib/python3.6/site-packages/OpenImageIO.so /home/runner/miniconda/envs/$VIRTUAL_ENVIRONMENT/lib/python3.6/site-packages/
-        python -c "import OpenImageIO;print(OpenImageIO.VERSION)"
+        PACKAGE=colour
+        PACKAGE_DEPENDENCIES="coverage coveralls flake8 imageio matplotlib mock nose pandas pyqt scipy six"
+        echo ::set-env name=PYTHON_VERSION::$PYTHON_VERSION
+        echo ::set-env name=VIRTUAL_ENVIRONMENT::$VIRTUAL_ENVIRONMENT
+        echo ::set-env name=PACKAGE::$PACKAGE
+        echo ::set-env name=PACKAGE_DEPENDENCIES::$PACKAGE_DEPENDENCIES
+    - name: Test Environment
+      run: echo $VIRTUAL_ENVIRONMENT
+  build-windows:
+    strategy:
+      matrix:
+        os: [windows-2019]
+        python-version: [2.7, 3.6, 3.7]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v1
+    - name: Environment Variables
+      env:
+        PYTHON_VERSION: ${{ matrix.python-version }}
+      run: |
+        set VIRTUAL_ENVIRONMENT=continuous-integration
+        set PACKAGE=colour
+        set PACKAGE_DEPENDENCIES="coverage coveralls flake8 imageio matplotlib mock nose pandas pyqt scipy six"
+        echo ::set-env name=PYTHON_VERSION::%PYTHON_VERSION%
+        echo ::set-env name=VIRTUAL_ENVIRONMENT::%VIRTUAL_ENVIRONMENT%
+        echo ::set-env name=PACKAGE::%PACKAGE%
+        echo ::set-env name=PACKAGE_DEPENDENCIES::%PACKAGE_DEPENDENCIES%
+    - name: Test Environment
+      run: echo %VIRTUAL_ENVIRONMENT%
