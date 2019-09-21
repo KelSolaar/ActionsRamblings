@@ -56,8 +56,9 @@ jobs:
     - name: Install Package Dependencies
       run: |
         Miniconda.exe /S /D=%USERPROFILE%/miniconda
-        set PATH=%USERPROFILE%/miniconda/bin;%USERPROFILE%
+        set PATH=%USERPROFILE%/miniconda/bin;%PATH%
         echo ::set-env name=PATH::%PATH%
+        dir %USERPROFILE%/miniconda/bin
         conda update --yes --quiet conda
         conda create --yes --quiet -n %VIRTUAL_ENVIRONMENT% python=%PYTHON_VERSION% %PACKAGE_DEPENDENCIES%
         source activate %VIRTUAL_ENVIRONMENT%
