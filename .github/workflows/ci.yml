@@ -56,10 +56,11 @@ jobs:
     - name: Install Package Dependencies
       run: |
         Miniconda.exe /S /D=%USERPROFILE%\miniconda
-        # set PATH=%USERPROFILE%\miniconda\bin;%PATH%
-        # echo ::set-env name=PATH::%PATH%
+        REM set PATH=%USERPROFILE%\miniconda\bin;%PATH%
+        REM echo ::set-env name=PATH::%PATH%
+        dir %USERPROFILE%
         dir %USERPROFILE%\miniconda
-        # conda update --yes --quiet conda
-        # conda create --yes --quiet -n %VIRTUAL_ENVIRONMENT% python=%PYTHON_VERSION% %PACKAGE_DEPENDENCIES%
-        # source activate %VIRTUAL_ENVIRONMENT%
-        # python -c "import imageio;imageio.plugins.freeimage.download()"
+        REM conda update --yes --quiet conda
+        REM conda create --yes --quiet -n %VIRTUAL_ENVIRONMENT% python=%PYTHON_VERSION% %PACKAGE_DEPENDENCIES%
+        REM source activate %VIRTUAL_ENVIRONMENT%
+        REM python -c "import imageio;imageio.plugins.freeimage.download()"
