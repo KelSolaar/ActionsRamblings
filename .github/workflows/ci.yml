@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   build-unix:
+    name: Build Ubuntu & macOS
     strategy:
       matrix:
         os: [ubuntu-18.04, macOS-10.14]
@@ -26,6 +27,7 @@ jobs:
     - name: Test Environment
       run: echo $VIRTUAL_ENVIRONMENT
   build-windows:
+    name: Build Windows
     strategy:
       matrix:
         os: [windows-2019]
