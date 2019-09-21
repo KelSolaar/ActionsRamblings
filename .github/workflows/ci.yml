@@ -40,7 +40,7 @@ jobs:
       run: |
         set VIRTUAL_ENVIRONMENT=continuous-integration
         set PACKAGE=colour
-        set PACKAGE_DEPENDENCIES=coverage coveralls flake8 imageio matplotlib mock nose pandas pyqt scipy six
+        set PACKAGE_DEPENDENCIES="coverage coveralls flake8 imageio matplotlib mock nose pandas pyqt scipy six"
         echo ::set-env name=PYTHON_VERSION::%PYTHON_VERSION%
         echo ::set-env name=VIRTUAL_ENVIRONMENT::%VIRTUAL_ENVIRONMENT%
         echo ::set-env name=PACKAGE::%PACKAGE%
