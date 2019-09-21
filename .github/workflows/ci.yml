@@ -38,7 +38,7 @@ jobs:
         conda update --yes --quiet conda
     - name: Install Package Dependencies
       run: |
-        conda create --yes --quiet -n %VIRTUAL_ENVIRONMENT% python=%PYTHON_VERSION% %PACKAGE_DEPENDENCIES%
+        call conda create --yes --quiet -n %VIRTUAL_ENVIRONMENT% python=%PYTHON_VERSION% %PACKAGE_DEPENDENCIES%
         call activate %VIRTUAL_ENVIRONMENT%
         where python
-        python -c "import imageio;imageio.plugins.freeimage.download()"
+        python -c "import imageio;imageio.plugins.freeimage.download();print('Hey!')"
