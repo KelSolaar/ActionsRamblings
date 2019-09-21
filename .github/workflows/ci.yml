@@ -58,8 +58,7 @@ jobs:
         Miniconda.exe /S /D=%USERPROFILE%\miniconda
         REM set PATH=%USERPROFILE%\miniconda\bin;%PATH%
         REM echo ::set-env name=PATH::%PATH%
-        dir %USERPROFILE%
-        dir %USERPROFILE%\miniconda
+        dir %USERPROFILE%\miniconda\condabin
         REM conda update --yes --quiet conda
         REM conda create --yes --quiet -n %VIRTUAL_ENVIRONMENT% python=%PYTHON_VERSION% %PACKAGE_DEPENDENCIES%
         REM source activate %VIRTUAL_ENVIRONMENT%
