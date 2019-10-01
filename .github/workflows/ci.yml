@@ -11,6 +11,7 @@ jobs:
         python-version: [2.7, 3.6, 3.7]
     runs-on: ${{ matrix.os }}
     steps:
+    - uses: actions/checkout@v1
     - name: Test Requests
       run: |
         pip install tqdm six
