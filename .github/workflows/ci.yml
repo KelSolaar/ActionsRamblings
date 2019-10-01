@@ -12,4 +12,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Test Requests
-      run: python test_requests.py
+      run: |
+        pip install tqdm six
+        python test_requests.py
