@@ -122,8 +122,40 @@ def url_download(url, filename, md5=None, retries=3):
                 raise error
 
 
+def json_open(url, retries=3):
+    """
+    Opens given url and return its content as "JSON".
+
+    Parameters
+    ----------
+    url : unicode
+        Url to open.
+    retries : int, optional
+        Number of retries in case where a networking error occurs.
+
+    Examples
+    --------
+    # Doctests skip for Python 2.x compatibility.
+    >>> json_open('https://zenodo.org/api/records/3245883')[:38]
+    ... # doctest: +SKIP
+    '{"conceptdoi":"10.5281/zenodo.3245882"'
+    """
+
+    attempt = 0
+    while attempt != retries:
+        try:
+            return json.loads(urllib.request.urlopen(url).read())
+
+            attempt = retries
+        except (urllib.error.URLError, IOError, ValueError) as error:
+            attempt += 1
+            print('An error occurred while opening "{0}" url '
+                  'during attempt {1}, retrying...'.format(url, attempt))
+            if attempt == retries:
+                raise error
+
 i = 0
 while True:
     i += 1
     sys.stderr.write('Attempt {0}\n'.format(i))
-    url_download('https://zenodo.org/api/files/a1f87ae9-bf9b-4451-becd-b4b3d7e35cc5/SRS-99-020.txt', os.devnull)
+    json_open('https://zenodo.org/api/records/3245883')
