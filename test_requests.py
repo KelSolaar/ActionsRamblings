@@ -13,6 +13,61 @@ from six.moves import urllib
 from tqdm import tqdm
 
 
+def hash_md5(filename, chunk_size=2 ** 16):
+    """
+    Computes the *Message Digest 5 (MD5)* hash of given file.
+
+    Parameters
+    ----------
+    filename : unicode
+        File to compute the *MD5* hash of.
+    chunk_size : int, optional
+        Chunk size to read from the file.
+
+    Returns
+    -------
+    unicode
+        *MD5* hash of given file.
+    """
+
+    md5 = hashlib.md5()
+
+    with open(filename, 'rb') as file_object:
+        while True:
+            chunk = file_object.read(chunk_size)
+            if not chunk:
+                break
+
+            md5.update(chunk)
+
+    return md5.hexdigest()
+
+
+class TqdmUpTo(tqdm):
+    """
+    :class:`tqdm` sub-class used to report the progress of an action.
+    """
+
+    def update_to(self, chunks_count=1, chunk_size=1, total_size=None):
+        """
+        Reports the progress of an action.
+
+        Parameters
+        ----------
+        chunks_count : int, optional
+            Number of blocks transferred.
+        chunk_size : int, optional
+            Size of each block (in tqdm units).
+        total_size : int, optional
+            Total size (in tqdm units).
+        """
+
+        if total_size is not None:
+            self.total = total_size
+
+        self.update(chunks_count * chunk_size - self.n)
+
+
 def url_download(url, filename, md5=None, retries=3):
     """
     Downloads given url and saves its content at given file.
