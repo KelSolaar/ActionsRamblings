@@ -125,5 +125,5 @@ def url_download(url, filename, md5=None, retries=3):
 i = 0
 while True:
     i += 1
-    print('Attempt {0}'.format(i))
+    sys.stderr.write('Attempt {0}\n'.format(i))
     url_download('https://github.com/colour-science/colour-datasets', os.devnull)
