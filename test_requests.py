@@ -126,4 +126,4 @@ i = 0
 while True:
     i += 1
     sys.stderr.write('Attempt {0}\n'.format(i))
-    url_download('https://github.com/colour-science/colour-datasets', os.devnull)
+    url_download('https://zenodo.org/api/files/a1f87ae9-bf9b-4451-becd-b4b3d7e35cc5/SRS-99-020.txt', os.devnull)
