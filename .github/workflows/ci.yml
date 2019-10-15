@@ -3,17 +3,16 @@ name: Continuous Integration
 on: [push]
 
 jobs:
-  unix-build:
-    name: Unix Build
+  windows-build:
+    name: Winodws Build
     strategy:
       matrix:
-        os: [ubuntu-18.04]
+        os: [windows-latest]
         python-version: [3.6]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v1
     - name: Test Requests
       run: |
-        pip install tqdm six
-        ls -l
-        python test_requests.py
+        pip install matplotlib nose
+        nosetests
