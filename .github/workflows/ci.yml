@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   windows-build:
-    name: Winodws Build
+    name: Windows Build
     strategy:
       matrix:
         os: [windows-latest]
