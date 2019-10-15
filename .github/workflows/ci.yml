@@ -12,7 +12,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v1
-    - name: Test Requests
+    - name: Windows - Set up Matplotlib Backend
+      run: |
+        mkdir %USERPROFILE%\.matplotlib
+        echo "backend: Agg" > %USERPROFILE%\.matplotlib\matplotlibrc
+    - name: Test Matplotlib
       run: |
         pip install matplotlib nose
         nosetests
