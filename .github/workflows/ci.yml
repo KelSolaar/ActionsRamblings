@@ -15,7 +15,7 @@ jobs:
     - name: Windows - Set up Matplotlib Backend
       run: |
         mkdir %USERPROFILE%\.matplotlib
-        echo "backend: Agg" > %USERPROFILE%\.matplotlib\matplotlibrc
+        echo backend: Agg > %USERPROFILE%\.matplotlib\matplotlibrc
     - name: Test Matplotlib
       run: |
         pip install matplotlib nose
