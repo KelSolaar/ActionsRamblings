@@ -1,22 +1,63 @@
 name: Continuous Integration
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
+  unix-build:
+    name: Unix Build
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, macOS-10.14]
+        python-version: [2.7]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v1
+    - name: Environment Variables
+      run: |
+        CI_PYTHON_VERSION=${{ matrix.python-version }}
+        CI_PACKAGE=colour
+        CI_SHA=${{ github.sha }}
+        CI_SLACK_WEBHOOK=${{ secrets.SLACK_WEBHOOK }}
+        CI_SLACK_SUCCESS_NOTIFICATION="payload={\"attachments\": [{\"color\": \"#4CAF50\", \"author_name\": \"Python ${{ matrix.python-version }} build on ${{ matrix.os }}\", \"text\": \"Build for commit *${CI_SHA:0:7}* succeeded!\", \"title\": \"${{ github.repository }}@${{ github.ref }}\", \"title_link\": \"https://github.com/${{ github.repository }}/commit/${{ github.sha }}/checks\", \"footer\": \"Triggered by ${{ github.actor }}\"}], \"username\":\"Github Actions @ ${{ github.repository }}\", \"channel\":\"#continuous-integration\", \"icon_url\":\"https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png\"}"
+        CI_SLACK_FAILURE_NOTIFICATION="${CI_SLACK_SUCCESS_NOTIFICATION/4CAF50/F44336}"
+        CI_SLACK_FAILURE_NOTIFICATION="${CI_SLACK_FAILURE_NOTIFICATION/succeeded/failed}"
+        echo ::set-env name=CI_PYTHON_VERSION::$CI_PYTHON_VERSION
+        echo ::set-env name=CI_PACKAGE::$CI_PACKAGE
+        echo ::set-env name=CI_SHA::$CI_SHA
+        echo ::set-env name=CI_SLACK_WEBHOOK::$CI_SLACK_WEBHOOK
+        echo ::set-env name=CI_SLACK_SUCCESS_NOTIFICATION::$CI_SLACK_SUCCESS_NOTIFICATION
+        echo ::set-env name=CI_SLACK_FAILURE_NOTIFICATION::$CI_SLACK_FAILURE_NOTIFICATION
+    - name: Notify Slack
+      if: always()
+      run: |
+        if [ "${{ job.status }}" == "Success" ]; then CI_SLACK_NOTIFICATION="$CI_SLACK_SUCCESS_NOTIFICATION"; else CI_SLACK_NOTIFICATION="$CI_SLACK_FAILURE_NOTIFICATION"; fi
+        if [ -z "$CI_SLACK_WEBHOOK" ]; then echo \"SLACK_WEBHOOK\" secret is undefined!; else curl -k -d "$CI_SLACK_NOTIFICATION" -X POST $CI_SLACK_WEBHOOK; fi
   windows-build:
     name: Windows Build
     strategy:
       matrix:
-        os: [windows-latest]
-        python-version: [3.6]
+        os: [windows-2019]
+        python-version: [2.7]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v1
-    - name: Windows - Set up Matplotlib Backend
+    - name: Environment Variables
       run: |
-        mkdir %USERPROFILE%\.matplotlib
-        echo backend: Agg > %USERPROFILE%\.matplotlib\matplotlibrc
-    - name: Test Matplotlib
+        set CI_PYTHON_VERSION=${{ matrix.python-version }}
+        set CI_PACKAGE=colour
+        set CI_SHA=${{ github.sha }}
+        set CI_SLACK_WEBHOOK=${{ secrets.SLACK_WEBHOOK }}
+        set CI_SLACK_SUCCESS_NOTIFICATION="payload={\"attachments\": [{\"color\": \"#4CAF50\", \"author_name\": \"Python ${{ matrix.python-version }} build on ${{ matrix.os }}\", \"text\": \"Build for commit *"%CI_SHA:~0,7%"* succeeded!\", \"title\": \"${{ github.repository }}@${{ github.ref }}\", \"title_link\": \"https://github.com/${{ github.repository }}/commit/${{ github.sha }}/checks\", \"footer\": \"Triggered by ${{ github.actor }}\"}], \"username\":\"Github Actions @ ${{ github.repository }}\", \"channel\":\"#continuous-integration\", \"icon_url\":\"https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png\"}"
+        set CI_SLACK_FAILURE_NOTIFICATION=%CI_SLACK_SUCCESS_NOTIFICATION:4CAF50=F44336%
+        set CI_SLACK_FAILURE_NOTIFICATION=%CI_SLACK_FAILURE_NOTIFICATION:succeeded=failed%
+        echo ::set-env name=CI_PYTHON_VERSION::%CI_PYTHON_VERSION%
+        echo ::set-env name=CI_PACKAGE::%CI_PACKAGE%
+        echo ::set-env name=CI_SHA::%CI_SHA%
+        echo ::set-env name=CI_SLACK_WEBHOOK::%CI_SLACK_WEBHOOK%
+        echo ::set-env name=CI_SLACK_SUCCESS_NOTIFICATION::%CI_SLACK_SUCCESS_NOTIFICATION%
+        echo ::set-env name=CI_SLACK_FAILURE_NOTIFICATION::%CI_SLACK_FAILURE_NOTIFICATION%
+    - name: Notify Slack
+      if: always()
       run: |
-        pip install matplotlib nose
-        nosetests
+        IF "${{ job.status }}"=="Success" (set CI_SLACK_NOTIFICATION=%CI_SLACK_SUCCESS_NOTIFICATION%) ELSE (set CI_SLACK_NOTIFICATION=%CI_SLACK_FAILURE_NOTIFICATION%)
+        IF "%CI_SLACK_WEBHOOK%"=="" (echo "SLACK_WEBHOOK" secret is undefined!) ELSE (curl -k -d %CI_SLACK_NOTIFICATION% -X POST %CI_SLACK_WEBHOOK%)
