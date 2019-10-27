@@ -12,24 +12,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v1
-    - name: Environment Variables
+    - name: Install exiftool
       run: |
-        set CI_PYTHON_VERSION=${{ matrix.python-version }}
-        set CI_PACKAGE=colour
-        set CI_SHA=${{ github.sha }}
-        set CI_SLACK_WEBHOOK=${{ secrets.SLACK_WEBHOOK }}
-        set CI_SLACK_SUCCESS_NOTIFICATION="payload={\"attachments\": [{\"color\": \"#4CAF50\", \"author_name\": \"Python ${{ matrix.python-version }} build on ${{ matrix.os }}\", \"text\": \"Build for commit *"%CI_SHA:~0,7%"* succeeded!\", \"title\": \"${{ github.repository }}@${{ github.ref }}\", \"title_link\": \"https://github.com/${{ github.repository }}/commit/${{ github.sha }}/checks\", \"footer\": \"Triggered by ${{ github.actor }}\"}], \"username\":\"Github Actions @ ${{ github.repository }}\", \"channel\":\"#continuous-integration\", \"icon_url\":\"https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png\"}"
-        set CI_SLACK_FAILURE_NOTIFICATION=%CI_SLACK_SUCCESS_NOTIFICATION:4CAF50=F44336%
-        set CI_SLACK_FAILURE_NOTIFICATION=%CI_SLACK_FAILURE_NOTIFICATION:succeeded=failed%
-        echo ::set-env name=CI_PYTHON_VERSION::%CI_PYTHON_VERSION%
-        echo ::set-env name=CI_PACKAGE::%CI_PACKAGE%
-        echo ::set-env name=CI_SHA::%CI_SHA%
-        echo ::set-env name=CI_SLACK_WEBHOOK::%CI_SLACK_WEBHOOK%
-        echo ::set-env name=CI_SLACK_SUCCESS_NOTIFICATION::%CI_SLACK_SUCCESS_NOTIFICATION%
-        echo ::set-env name=CI_SLACK_FAILURE_NOTIFICATION::%CI_SLACK_FAILURE_NOTIFICATION%
+        curl -L http://web.mit.edu/jhawk/mnt/cgs/Image-ExifTool-6.99/html/exiftool-6.99.zip -o exiftool-6.99.zip
+        powershell -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::ExtractToDirectory('exiftool-6.99.zip', 'exiftool'); }"
+        set PATH=%CD%\exiftool;%PATH%
+        echo ::set-env name=PATH::%PATH%
+        exiftool -v
       shell: cmd
-    - name: Notify Slack
-      if: always()
-      run: |
-        IF "${{ job.status }}"=="Success" (set CI_SLACK_NOTIFICATION=%CI_SLACK_SUCCESS_NOTIFICATION%) ELSE (set CI_SLACK_NOTIFICATION=%CI_SLACK_FAILURE_NOTIFICATION%)
-        IF "%CI_SLACK_WEBHOOK%"=="" (echo "SLACK_WEBHOOK" secret is undefined!) ELSE (curl -k -d %CI_SLACK_NOTIFICATION% -X POST %CI_SLACK_WEBHOOK%)
