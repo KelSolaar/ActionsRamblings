@@ -14,8 +14,8 @@ jobs:
     - uses: actions/checkout@v1
     - name: Install exiftool
       run: |
-        curl -L http://web.mit.edu/jhawk/mnt/cgs/Image-ExifTool-6.99/html/exiftool-6.99.zip -o exiftool-6.99.zip
-        powershell -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::ExtractToDirectory('exiftool-6.99.zip', 'exiftool'); }"
+        curl -L https://sourceforge.net/projects/exiftool/files/exiftool-11.73.zip/download -o exiftool-11.73.zip
+        powershell -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::ExtractToDirectory('exiftool-11.73.zip', 'exiftool'); }"
         set PATH=%CD%\exiftool;%PATH%
         echo ::set-env name=PATH::%PATH%
         exiftool -v
