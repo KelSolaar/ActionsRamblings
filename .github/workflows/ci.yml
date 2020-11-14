@@ -12,14 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v1
-    - name: Install Poetry
+    - name: Cygwin
       run: |
-        curl -L https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py -o get-poetry.py
-        python get-poetry.py --version 1.0.10
-        echo "$USERPROFILE\\.poetry\\bin" >> $GITHUB_PATH
-      shell: bash
-    - name: Install Package Dependencies
-      run: |
-        echo $PATH
-        poetry help
+        cygpath -u "C:\foo\bar"
       shell: bash
