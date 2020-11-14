@@ -21,3 +21,4 @@ jobs:
     - name: Install Package Dependencies
       run: |
         call poetry help
+      shell: cmd
