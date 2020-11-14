@@ -3,8 +3,8 @@ name: Continuous Integration
 on: [push, pull_request]
 
 jobs:
-  windows-build:
-    name: Windows Build
+  continuous-integration:
+    name: Windows Build <Bla>
     strategy:
       matrix:
         os: [windows-2019]
