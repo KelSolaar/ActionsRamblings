@@ -14,5 +14,9 @@ jobs:
     - uses: actions/checkout@v1
     - name: Cygwin
       run: |
-        cygpath -u "C:\foo\bar"
+        echo "VIRTUAL_ENVIRONMENT_ACTIVATE=cygpath -u $(PWD)/bin/activate" >> $GITHUB_ENV
+      shell: bash
+    - name: Envo
+      run: |
+        echo $VIRTUAL_ENVIRONMENT_ACTIVATE
       shell: bash
