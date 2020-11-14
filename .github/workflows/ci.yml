@@ -12,11 +12,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v1
-    - name: Install exiftool
+    - name: Install Poetry
       run: |
-        curl -L https://sourceforge.net/projects/exiftool/files/exiftool-11.73.zip/download -o exiftool-11.73.zip
-        powershell -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::ExtractToDirectory('exiftool-11.73.zip', 'exiftool'); }"
-        set PATH=%CD%\exiftool;%PATH%
-        echo ::set-env name=PATH::%PATH%
-        dir %CD%\exiftool
+        curl -L https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py -o get-poetry.py
+        python get-poetry.py --version 1.0.10
+        echo "%USERPROFILE%\.poetry\bin" >> $GITHUB_PATH
       shell: cmd
+    - name: Install Package Dependencies
+      run: |
+        call poetry help
