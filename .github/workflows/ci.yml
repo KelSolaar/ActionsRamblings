@@ -20,5 +20,6 @@ jobs:
       shell: cmd
     - name: Install Package Dependencies
       run: |
+        echo %PATH%
         call poetry help
       shell: cmd
