@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   continuous-integration:
-    name: Continuous Integration
+    name: ${{ matrix.os }} - ${{ matrix.python-version }}
     strategy:
       matrix:
         os: [windows-2019]
