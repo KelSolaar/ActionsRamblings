@@ -1,4 +1,4 @@
-name: Continuous Integration - Quality & Unit Tests
+name: Install Poetry - Windows - Python 3.8 
 
 on: [push, pull_request]
 
