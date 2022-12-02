@@ -35,4 +35,5 @@ jobs:
       shell: bash
     - name: Test ExifTool
       run: |
+        echo %PATH%
         python -c "import subprocess;subprocess.check_output('exiftool')"
