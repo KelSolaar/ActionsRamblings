@@ -32,6 +32,7 @@ jobs:
         unzip -d exiftool exiftool-12.51.zip
         cp exiftool/exiftool\(-k\).exe exiftool/exiftool.exe
         echo "$PWD/exiftool" >> $GITHUB_PATH
+      shell: bash
     - name: Test ExifTool
       run: |
         python -c "import subprocess;subprocess.check_output('exiftool')"
