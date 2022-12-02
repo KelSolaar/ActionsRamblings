@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest]
-        python-version: [3.7, 3.8, 3.9, '3.10']
+        python-version: ['3.11']
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
@@ -26,7 +26,12 @@ jobs:
     - name: Environment
       run: set
       shell: cmd
-    - name: Install Poetry
+    - name: Install Dependencies (Windows)
       run: |
-        curl -sSL https://install.python-poetry.org | python3 -
-      shell: bash
+        curl -L https://exiftool.org/exiftool-12.51.zip -o exiftool-12.51.zip
+        unzip -d exiftool exiftool-12.51.zip
+        cp exiftool/exiftool\(-k\).exe exiftool/exiftool.exe
+        echo "$PWD/exiftool" >> $GITHUB_PATH
+    - name: Test ExifTool
+      run: |
+        python -c "import subprocess;subprocess.check_output('exiftool')"
