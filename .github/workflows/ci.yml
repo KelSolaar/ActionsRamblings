@@ -31,7 +31,7 @@ jobs:
         curl -L https://download.adobe.com/pub/adobe/dng/win/DNGConverter_11_4.exe -o DNGConverter_11_4.exe
         DNGConverter_11_4.exe /S
         echo "C:\Program Files\Adobe\Adobe DNG Converter" >> $GITHUB_PATH
-      shell: bash
+      shell: cmd
     - name: Test ExifTool
       run: |
         dir "C:\Program Files\"
