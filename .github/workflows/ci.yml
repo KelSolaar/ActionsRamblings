@@ -32,6 +32,6 @@ jobs:
         DNGConverter_11_4.exe /S
         echo "C:\Program Files\Adobe\Adobe DNG Converter" >> $GITHUB_PATH
       shell: cmd
-    - name: Test ExifTool
+    - name: Test DNG
       run: |
-        dir "C:\Program Files\Adobe"
+        python -c "import subprocess;subprocess.check_output('Adobe DNG Converter')"
