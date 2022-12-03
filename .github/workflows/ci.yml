@@ -36,6 +36,7 @@ jobs:
     - name: Echo Path
       run: |
         echo "$PATH"
+        ls /d/a/ActionsRamblings/ActionsRamblings/exiftool
       shell: bash
     - name: Test ExifTool
       run: |
