@@ -34,4 +34,4 @@ jobs:
       shell: cmd
     - name: Test ExifTool
       run: |
-        dir "C:\Program Files\"
+        dir "C:\Program Files\Adobe"
