@@ -29,7 +29,7 @@ jobs:
     - name: Install Dependencies (Windows)
       run: |
         curl -L https://download.adobe.com/pub/adobe/dng/win/DNGConverter_11_4.exe -o DNGConverter_11_4.exe
-        ./DNGConverter_11_4.exe /S
+        DNGConverter_11_4.exe /S
       shell: cmd
     - name: Add Adobe DNG Converter to %PATH% (Windows)
       run: |
