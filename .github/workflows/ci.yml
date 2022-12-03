@@ -36,5 +36,4 @@ jobs:
     - name: Test ExifTool
       run: |
         echo "$PATH"
-        python -c "import shutil;print(shutil.which('exiftool.exe'))"
-      shell: bash
+        python -c "import shutil;print(shutil.which('exiftool'))"
