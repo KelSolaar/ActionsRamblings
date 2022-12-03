@@ -35,5 +35,5 @@ jobs:
       shell: bash
     - name: Test ExifTool
       run: |
-        python -c "import sys;from pprint import pprint;pprint(sys.path)"
+        python -c "import os;print(os.getenv('PATH'))"
       shell: bash
