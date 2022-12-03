@@ -37,4 +37,4 @@ jobs:
       shell: bash
     - name: Test DNG
       run: |
-        python -c "import os;import subprocess;print(os.getenv('PATH'));subprocess.check_output('Adobe DNG Converter')"
+        python -c "import os;import subprocess;print(os.getenv('PATH'));subprocess.check_output(['Adobe DNG Converter', 'IMG_2600.CR2'])"
