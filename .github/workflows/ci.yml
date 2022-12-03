@@ -35,6 +35,11 @@ jobs:
       run: |
         echo "C:\Program Files\Adobe\Adobe DNG Converter" >> $GITHUB_PATH
       shell: bash
+    - name: Disable xdist (Windows)
+      run: |
+        sed -i 's/-n auto --dist=loadscope --durations=5/--durations=5/g' pyproject.toml
+        cat pyproject.toml
+      shell: bash
     - name: Test DNG
       run: |
         python test.py
