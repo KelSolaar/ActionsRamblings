@@ -33,6 +33,10 @@ jobs:
         cp exiftool/exiftool\(-k\).exe exiftool/exiftool.exe
         echo "$PWD/exiftool" >> $GITHUB_PATH
       shell: bash
+    - name: Echo Path
+      run: |
+        echo "$PATH"
+      shell: bash
     - name: Test ExifTool
       run: |
         echo "$PATH"
