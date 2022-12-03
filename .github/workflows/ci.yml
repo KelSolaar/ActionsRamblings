@@ -34,4 +34,4 @@ jobs:
       shell: cmd
     - name: Test DNG
       run: |
-        python -c "import subprocess;subprocess.check_output('Adobe DNG Converter')"
+        python -c "import os;import subprocess;print(os.getenv('PATH'));subprocess.check_output('Adobe DNG Converter')"
