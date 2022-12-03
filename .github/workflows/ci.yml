@@ -33,12 +33,7 @@ jobs:
         cp exiftool/exiftool\(-k\).exe exiftool/exiftool.exe
         echo "$PWD/exiftool" >> $GITHUB_PATH
       shell: bash
-    - name: Echo Path
-      run: |
-        echo "$PATH"
-        ls /d/a/ActionsRamblings/ActionsRamblings/exiftool
-      shell: bash
     - name: Test ExifTool
       run: |
         echo "$PATH"
-        python -c "import subprocess;subprocess.check_output('exiftool.exe')"
+        python -c "import shutil;import subprocess;subprocess.check_output(shutil.which('exiftool.exe'))"
