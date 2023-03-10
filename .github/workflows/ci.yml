@@ -36,7 +36,8 @@ jobs:
       run: |
         brew install openimageio
         ls /usr/local/Cellar/openimageio/*/lib/python*/site-packages/OpenImageIO/
-        python -c "import sys;print(sys.path)"
+        ln -s /usr/local/Cellar/openimageio/*/lib/python*/site-packages/OpenImageIO/OpenImageIO*.so /Library/Frameworks/Python.framework/Versions/${{ matrix.python-version }}/lib/python${{ matrix.python-version }}/site-packages/OpenImageIO.so
+        ls /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages
     - name: Test with Pytest
       run: |
         ls
