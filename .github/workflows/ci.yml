@@ -40,5 +40,5 @@ jobs:
         ls /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages
     - name: Test with Pytest
       run: |
-        python -c "import OpenImageIO"
+        python -c "import OpenImageIO;print(OpenImageIO.__version__)"
       shell: bash
