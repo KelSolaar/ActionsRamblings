@@ -35,7 +35,7 @@ jobs:
     - name: Install OpenImageIO (macOs)
       run: |
         brew install openimageio
-        ls /opt/homebrew/Cellar/openimageio/*/lib/python*/site-packages/OpenImageIO/
+        ls /usr/local/Cellar/openimageio/*/lib/python*/site-packages/OpenImageIO/
         python -c "import sys;print(sys.path)"
     - name: Test with Pytest
       run: |
