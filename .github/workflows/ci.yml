@@ -16,3 +16,7 @@ jobs:
       run: |
         pip install legendary-gl
       shell: bash
+    - name: Authenticate with Epic Games
+      run: |
+        legendary help
+      shell: bash
