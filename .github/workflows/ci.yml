@@ -20,6 +20,5 @@ jobs:
       run: |
         mkdir -p ~/.config/legendary
         echo "${{ secrets.LEGENDARY_USER_JSON }}" > ~/.config/legendary/user.json
-        tail -n 3 ~/.config/legendary/user.json
         legendary auth
       shell: bash
