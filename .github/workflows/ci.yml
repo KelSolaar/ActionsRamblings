@@ -18,5 +18,6 @@ jobs:
       shell: bash
     - name: Authenticate with Epic Games
       run: |
-        legendary auth --token ${{ secrets.EGL_TOKEN }}
+        echo "${{ secrets.LEGENDARY_USER_JSON }}" > ~/.config/legendary/user.json
+        legendary auth
       shell: bash
