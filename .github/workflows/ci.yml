@@ -4,14 +4,14 @@ on: [push, pull_request]
 
 jobs:
   build-unreal-engine-docset:
-    name: ${{ matrix.docset }}
-    strategy:
-      matrix:
-        docset: [C++]
-      fail-fast: false
+    name: Build Unreal Engine Docset
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
+    - name: Environment Variables
+      run: |
+        echo "CI_UNREAL_ENGINE_VERSION=5.3" >> $GITHUB_ENV
+      shell: bash
     - name: Install Legendary
       run: |
         pip install legendary-gl
@@ -20,6 +20,9 @@ jobs:
       run: |
         mkdir -p ~/.config/legendary
         echo "${{ secrets.LEGENDARY_USER_JSON }}" | base64 --decode > ~/.config/legendary/user.json
-        tail -n 3 ~/.config/legendary/user.json
         legendary auth
+      shell: bash
+    - name: Download Unreal Engine
+      run: |
+        legendary download UE_$CI_UNREAL_ENGINE_VERSION --include-ue --platform Windows --install-tag "" --yes
       shell: bash
