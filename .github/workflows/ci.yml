@@ -18,6 +18,7 @@ jobs:
       shell: bash
     - name: Authenticate with Epic Games
       run: |
+        mkdir -p ~/.config/legendary
         echo "${{ secrets.LEGENDARY_USER_JSON }}" > ~/.config/legendary/user.json
         legendary auth
       shell: bash
