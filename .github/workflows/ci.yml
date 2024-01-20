@@ -20,5 +20,6 @@ jobs:
       run: |
         mkdir -p ~/.config/legendary
         echo "${{ secrets.LEGENDARY_USER_JSON }}" > ~/.config/legendary/user.json
+        echo "${{ secrets.LEGENDARY_USER_JSON }}" > ~/.config/legendary/user.json.lock
         legendary auth
       shell: bash
