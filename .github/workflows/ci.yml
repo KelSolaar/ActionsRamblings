@@ -24,5 +24,6 @@ jobs:
       shell: bash
     - name: Download Unreal Engine
       run: |
+        legendary list --include-ue
         legendary download UE_$CI_UNREAL_ENGINE_VERSION --include-ue --platform Windows --install-tag "" --yes
       shell: bash
