@@ -12,7 +12,7 @@ jobs:
       run: |
         echo "CI_UNREAL_ENGINE_VERSION=5.3" >> $GITHUB_ENV
       shell: bash
-    - name: Environment Variables
+    - name: Tar
       run: |
         which tar
       shell: bash
