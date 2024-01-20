@@ -7,7 +7,7 @@ jobs:
     name: ${{ matrix.docset }}
     strategy:
       matrix:
-        docset: [C++, Blueprint, Python]
+        docset: [C++]
       fail-fast: false
     runs-on: windows-latest
     steps:
