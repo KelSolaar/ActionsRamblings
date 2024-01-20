@@ -12,18 +12,8 @@ jobs:
       run: |
         echo "CI_UNREAL_ENGINE_VERSION=5.3" >> $GITHUB_ENV
       shell: bash
-    - name: Install Legendary
+    - name: Environment Variables
       run: |
-        pip install legendary-gl
+        which tar
       shell: bash
-    - name: Authenticate with Epic Games
-      run: |
-        mkdir -p ~/.config/legendary
-        echo "${{ secrets.LEGENDARY_USER_JSON }}" | base64 --decode > ~/.config/legendary/user.json
-        legendary auth
-      shell: bash
-    - name: Download Unreal Engine
-      run: |
-        legendary list --include-ue
-        legendary download UE_$CI_UNREAL_ENGINE_VERSION --include-ue --platform Windows --install-tag "" --yes
-      shell: bash
+    
